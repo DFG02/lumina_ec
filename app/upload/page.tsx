@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
@@ -12,7 +12,7 @@ interface UploadedImage {
   preview: string;
 }
 
-export default function UploadPage() {
+function UploadPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const template = searchParams.get("template") || "travel-classic";
@@ -195,5 +195,13 @@ export default function UploadPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function UploadPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center"><div className="text-gray-600">Cargando...</div></div>}>
+      <UploadPageContent />
+    </Suspense>
   );
 }
